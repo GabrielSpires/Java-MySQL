@@ -11,26 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Main {
-	
-//	public enum Autentication {
-//		SIGN_IN("login"),
-//		SIGN_UP("cadastro");
-//		private final String text;
-//		private Autentication(final String text) {
-//			this.text = text;
-//		}
-//		public String toString() {
-//	        return text;
-//	    }
-//	}
 
-	public static void main(String[] args){
-//		System.out.println(Autentication.SIGN_IN.toString());
-//		System.out.println(Autentication.SIGN_UP.toString());
-		
-//		Autentication olar = Autentication.SIGN_IN;		
-//		System.out.println(olar);
-		
+	public static void main(String[] args){		
 		Scanner input = new Scanner(System.in);
 		
 		System.out.print("Username: ");   String username = input.next();
@@ -45,8 +27,15 @@ public class Main {
 		System.out.println(birthDate);
 		
 		//SELECT
-		System.out.print("Qual usuario deseja buscar?"); username = input.next();
+		System.out.print("Qual usuario deseja buscar?");
+		username = input.next();
 		selectUser(username);
+		
+		//UPDATE
+		System.out.print("Qual usuario deseja editar?");
+		username = input.next();
+		updateUser(username);
+		
 	}
 	
 	public static Connection getConnection() {
@@ -77,7 +66,9 @@ public class Main {
 			PreparedStatement insert = con.prepareStatement("INSERT INTO users (username, password, age, firstname, lastname, birthday) "
 					+ "VALUES ('"+username+"','"+password+"','"+age+"','"+firstName+"','"+lastName+"','"+birthDate+"')");
 			insert.executeUpdate();
-		} catch (Exception e) {System.out.println(e);}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 	
 	public static void selectUser(String username) {
@@ -89,13 +80,27 @@ public class Main {
 			
 			while (queryResult.next()) {
 				System.out.print(queryResult.getString("username") + " ");
-//				System.out.print(queryResult.getString("password") + " ");
+				System.out.print(queryResult.getString("password") + " ");
 				System.out.print(queryResult.getString("age") + " ");
 				System.out.print(queryResult.getString("firstName") + " ");
 				System.out.println(queryResult.getString("lastName"));
 			}
 		} catch (Exception e) {
-			System.out.println();
+			System.out.println(e);
+		}
+	}
+	
+	public static void updateUser(String username) {
+		try {
+			Connection con = getConnection();
+			PreparedStatement update = con.prepareStatement("UPDATE users SET username = ? WHERE username = ?");
+			update.setString(1, "edited" + username);
+			update.setString(2, username);
+			
+			update.executeUpdate();
+			update.close();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 }
