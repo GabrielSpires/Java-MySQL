@@ -15,7 +15,7 @@ public class Main {
 
 	public static void main(String[] args){		
 		Scanner input = new Scanner(System.in);
-		
+		System.out.println("Welcome!");
 		System.out.print("Username: ");   String username = input.next();
 		System.out.print("Password: ");   String password = input.next();
 		System.out.print("Age: "); 		  int age = input.nextInt();
